@@ -1,0 +1,16 @@
+.no-remaining {
+  color: green;
+}
+.remaining {
+  display: flex;
+}
+.costs li:nth-child(2n-1) {
+  background: rgba(255, 255, 255, 0.08);
+}
+.costs li {
+  padding: 2px 0;
+}
+.remaining-name {
+  flex-grow: 1;
+  text-wrap: nowrap;
+}
