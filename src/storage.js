@@ -14,10 +14,18 @@ export function Save(gear) {
 // Function to load gear data from local storage and update the gear list
 export function Load(gear) {
   const savedProgress = JSON.parse(localStorage.getItem(storageKey));
+  return load(gear, savedProgress);
+}
 
-  if (savedProgress) {
+export function FromString(gear, str) {
+  const savedProgress = JSON.parse(str);
+  return load(gear, savedProgress);
+}
+
+function load(gear, progress) {
+  if (progress) {
     gear.forEach((gear) => {
-      const savedGear = savedProgress.find((g) => g.name === gear.name);
+      const savedGear = progress.find((g) => g.name === gear.name);
       if (savedGear) {
         gear.acquired = savedGear.acquired;
         gear.currLevel = savedGear.currLevel;
@@ -25,4 +33,8 @@ export function Load(gear) {
     });
   }
   return gear;
+}
+
+export function Export() {
+  return localStorage.getItem(storageKey);
 }
