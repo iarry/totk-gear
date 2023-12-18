@@ -54,6 +54,7 @@ export class Upgrade {
 }
 
 export function NormalizeName(str) {
+  if (!str) return str;
   return str.toLowerCase().replace(/[-']/g, "");
 }
 
