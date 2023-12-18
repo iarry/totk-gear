@@ -1,15 +1,27 @@
-.no-remaining {
-  color: green;
+.costs {
+  min-width: 260px;
 }
+
+.costs.mobile {
+  flex-grow: 1;
+}
+
+.no-remaining {
+  color: rgba(40, 200, 40, 0.9);
+}
+
 .remaining {
   display: flex;
 }
+
 .costs li:nth-child(2n-1) {
   background: rgba(255, 255, 255, 0.08);
 }
+
 .costs li {
-  padding: 2px 0;
+  padding: 3px 4px;
 }
+
 .remaining-name {
   flex-grow: 1;
   text-wrap: nowrap;

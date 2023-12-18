@@ -13,6 +13,7 @@ export class UpgradeCost {
     this.material = material;
     this.fixQuantity();
     this.normalizeMaterial();
+    this.normalizedMaterial = NormalizeName(this.material);
   }
 
   // Chat GPT couldn't figure out this parsing in the bash script
@@ -52,9 +53,14 @@ export class Upgrade {
   }
 }
 
+export function NormalizeName(str) {
+  return str.toLowerCase().replace(/[-']/g, "");
+}
+
 export class Gear {
   constructor(n, upgrades) {
     this.name = n;
+    this.normalizedName = NormalizeName(n);
     this.acquired = false;
     this.currLevel = 0;
     this.upgrades = upgrades && upgrades.filter((c) => c.costs.length); // Array of Upgrade objects

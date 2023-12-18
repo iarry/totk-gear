@@ -5,7 +5,7 @@ import GearItem from "./gearitem";
 import originalGear from "./data";
 import Costs from "./costs";
 import { Save, Export, FromString } from "./storage";
-import { Gear } from "./types";
+import { Gear, NormalizeName } from "./types";
 import { MdFileCopy } from "react-icons/md";
 
 // GearList component as a smart (class-based) component
@@ -14,11 +14,31 @@ class GearList extends Component {
     super(props);
     this.state = {
       gears: props.gears,
+      search: "",
       exported: "",
       imported: "",
+      showGear: true,
+      screenWidth: window.innerWidth,
+      searchMaterials: false,
     };
     this.exportRef = React.createRef(0);
   }
+
+  componentDidMount() {
+    window.addEventListener("resize", this.handleResize);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.handleResize);
+  }
+
+  handleResize = () => {
+    this.setState({ screenWidth: window.innerWidth });
+  };
+
+  toggleComponent = () => {
+    this.setState((prevState) => ({ showGear: !prevState.showGear }));
+  };
 
   upgradeGear = (gearName, inc) => {
     this.setState((prevState) => ({
@@ -80,47 +100,100 @@ class GearList extends Component {
   }
 
   render() {
+    const { showGear, screenWidth } = this.state;
+    const isMobile = screenWidth < 720;
+    const searchResults = this.state.gears.filter(
+      (g) =>
+        !this.state.search ||
+        g.normalizedName.includes(NormalizeName(this.state.search)) ||
+        (this.state.searchMaterials &&
+          g.upgrades.some((u) =>
+            u.costs.some((uc) =>
+              uc.normalizedMaterial.includes(NormalizeName(this.state.search))
+            )
+          ))
+    );
     return (
       <>
+        <div className="search">
+          <input
+            type="text"
+            placeholder="Search..."
+            value={this.state.search}
+            onChange={(event) => {
+              this.setState({ search: event.target.value });
+            }}
+          />
+          <label>
+            <input
+              type="checkbox"
+              checked={this.state.searchMaterials}
+              onChange={() => {
+                this.setState((prevState) => ({
+                  searchMaterials: !prevState.searchMaterials,
+                }));
+              }}
+            />
+            Search materials
+          </label>
+        </div>
+        <header>
+          {isMobile && (
+            <button onClick={this.toggleComponent}>
+              {showGear ? "Show costs" : "Show gear"}
+            </button>
+          )}
+        </header>
         <main>
-          <section className="gear">
-            <h2>
-              Looted ({this.state.gears.filter((gear) => gear.acquired).length}/
-              {this.state.gears.length})
-            </h2>
-            <ol>
-              {this.state.gears
-                .filter((gear) => gear.acquired)
-                .sort(compare)
-                .map((gear) => (
-                  <GearItem
-                    key={gear.name}
-                    gear={gear}
-                    onUpgrade={this.upgradeGear}
-                    onToggleAcquired={this.toggleAcquired}
-                  />
-                ))}
-            </ol>
-            <h2>
-              Unlooted (
-              {this.state.gears.filter((gear) => !gear.acquired).length}/
-              {this.state.gears.length})
-            </h2>
-            <ol>
-              {this.state.gears
-                .filter((gear) => !gear.acquired)
-                .sort(compare)
-                .map((gear) => (
-                  <GearItem
-                    key={gear.name}
-                    gear={gear}
-                    onUpgrade={this.upgradeGear}
-                    onToggleAcquired={this.toggleAcquired}
-                  />
-                ))}
-            </ol>
-          </section>
-          <Costs gears={this.state.gears} />
+          {(!isMobile || (isMobile && this.state.showGear)) && (
+            <section className="gear">
+              <h2>
+                Looted (
+                {this.state.gears.filter((gear) => gear.acquired).length}/
+                {this.state.gears.length})
+              </h2>
+              <ol>
+                {searchResults
+                  .filter((gear) => gear.acquired)
+                  .sort(compare)
+                  .map((gear) => (
+                    <GearItem
+                      key={gear.name}
+                      gear={gear}
+                      onUpgrade={this.upgradeGear}
+                      onToggleAcquired={this.toggleAcquired}
+                    />
+                  ))}
+              </ol>
+              <h2>
+                Unlooted (
+                {this.state.gears.filter((gear) => !gear.acquired).length}/
+                {this.state.gears.length})
+              </h2>
+              <ol>
+                {searchResults
+                  .filter((gear) => !gear.acquired)
+                  .sort(compare)
+                  .map((gear) => (
+                    <GearItem
+                      key={gear.name}
+                      gear={gear}
+                      onUpgrade={this.upgradeGear}
+                      onToggleAcquired={this.toggleAcquired}
+                    />
+                  ))}
+              </ol>
+            </section>
+          )}
+          {(!isMobile || (isMobile && !this.state.showGear)) && (
+            <Costs
+              gears={this.state.gears}
+              search={
+                this.state.searchMaterials && NormalizeName(this.state.search)
+              }
+              className={isMobile ? "mobile" : ""}
+            />
+          )}
         </main>
         <footer>
           <div className="export">

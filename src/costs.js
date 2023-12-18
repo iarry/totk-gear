@@ -2,7 +2,7 @@ import "./costs.css";
 import { UpgradeCost } from "./types";
 
 // Costs component as a functional component
-function Costs({ gears }) {
+function Costs({ gears, className, search }) {
   let remaining = remainingCosts(gears);
   let total = totalCosts(gears).sort(compare);
   let freeToUse = total
@@ -12,33 +12,37 @@ function Costs({ gears }) {
     })
     .sort(compare);
   return (
-    <section className="costs">
+    <section className={`costs ${className ? className : ""}`}>
       <h2>Free to use:</h2>
       <ol>
-        {freeToUse.map((c, index) => {
-          return (
-            <li key={index} className="remaining no-remaining">
-              <span className="remaining-name">{c.material} </span>
-              <span>0/{c.quantity}</span>
-            </li>
-          );
-        })}
-      </ol>
-      <h2>Remaining costs:</h2>
-      <ol>
-        {total.map((t, index) => {
-          let r = remaining.find((r) => r.material === t.material);
-          return (
-            r && (
-              <li key={index} className="remaining">
-                <span className="remaining-name">{t.material} </span>
-                <span>
-                  {r.quantity}/{t.quantity}
-                </span>
+        {freeToUse
+          .filter((c) => !search || c.normalizedMaterial.includes(search))
+          .map((c, index) => {
+            return (
+              <li key={index} className="remaining no-remaining">
+                <span className="remaining-name">{c.material} </span>
+                <span>0/{c.quantity}</span>
               </li>
-            )
-          );
-        })}
+            );
+          })}
+      </ol>
+      <h2>Needed:</h2>
+      <ol>
+        {total
+          .filter((c) => !search || c.normalizedMaterial.includes(search))
+          .map((t, index) => {
+            let r = remaining.find((r) => r.material === t.material);
+            return (
+              r && (
+                <li key={index} className="remaining">
+                  <span className="remaining-name">{t.material} </span>
+                  <span>
+                    {r.quantity}/{t.quantity}
+                  </span>
+                </li>
+              )
+            );
+          })}
       </ol>
     </section>
   );
@@ -65,10 +69,6 @@ function sumCosts(items, costMethod) {
 
 function remainingCosts(items) {
   return sumCosts(items, "getRemaining");
-}
-
-function spentCosts(items) {
-  return sumCosts(items, "getSpent");
 }
 
 function totalCosts(items) {

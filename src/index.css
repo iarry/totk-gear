@@ -1,11 +1,27 @@
 body {
-  margin: 0;
+  background: rgba(0, 0, 0, 0.9);
+  color: rgba(255, 255, 255, 0.9);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: rgba(0, 0, 0, 0.9);
-  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
   padding: 16px;
+}
+
+button {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+}
+
+button, input, textarea, label {
+  background: #313131;
+  border-radius: 4px;
+  border: none;
+  color: rgba(255, 255, 255, 0.9);
+  padding: 8px;
+  font-size: 18px;
 }
