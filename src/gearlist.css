@@ -13,6 +13,13 @@
 
 .search input[type="text"] {
   width: calc(100% - 16px);
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.search button {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
 }
 
 .search input[type="checkbox"] {

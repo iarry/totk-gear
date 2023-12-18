@@ -6,7 +6,7 @@ import originalGear from "./data";
 import Costs from "./costs";
 import { Save, Export, FromString } from "./storage";
 import { Gear, NormalizeName } from "./types";
-import { MdFileCopy } from "react-icons/md";
+import { MdFileCopy, MdClose } from "react-icons/md";
 
 // GearList component as a smart (class-based) component
 class GearList extends Component {
@@ -124,6 +124,15 @@ class GearList extends Component {
               this.setState({ search: event.target.value });
             }}
           />
+          <button
+            onClick={() => {
+              this.setState(() => ({
+                search: "",
+              }));
+            }}
+          >
+            <MdClose />
+          </button>
           <label>
             <input
               type="checkbox"
