@@ -139,7 +139,7 @@ class GearList extends Component {
         </div>
         <header>
           {isMobile && (
-            <button onClick={this.toggleComponent}>
+            <button onClick={this.toggleComponent} className="toggle">
               {showGear ? "Show costs" : "Show gear"}
             </button>
           )}
