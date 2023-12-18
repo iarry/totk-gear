@@ -26,7 +26,7 @@ function Costs({ gears, className, search }) {
             );
           })}
       </ol>
-      <h2>Needed:</h2>
+      <h2>Still needed:</h2>
       <ol>
         {total
           .filter((c) => !search || c.normalizedMaterial.includes(search))

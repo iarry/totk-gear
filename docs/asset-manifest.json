@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/totk-gear/static/css/main.c1b05951.css",
-    "main.js": "/totk-gear/static/js/main.cc72bf6b.js",
+    "main.css": "/totk-gear/static/css/main.24041c4e.css",
+    "main.js": "/totk-gear/static/js/main.3e6c2802.js",
     "index.html": "/totk-gear/index.html",
-    "main.c1b05951.css.map": "/totk-gear/static/css/main.c1b05951.css.map",
-    "main.cc72bf6b.js.map": "/totk-gear/static/js/main.cc72bf6b.js.map"
+    "main.24041c4e.css.map": "/totk-gear/static/css/main.24041c4e.css.map",
+    "main.3e6c2802.js.map": "/totk-gear/static/js/main.3e6c2802.js.map"
   },
   "entrypoints": [
-    "static/css/main.c1b05951.css",
-    "static/js/main.cc72bf6b.js"
+    "static/css/main.24041c4e.css",
+    "static/js/main.3e6c2802.js"
   ]
 }
